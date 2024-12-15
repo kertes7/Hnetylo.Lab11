@@ -1,50 +1,91 @@
-#include <iostream>
-#include <string>
+ #include <iostream> 
 
-class Student {
-private:
-    std::string name;
-    std::string id;
-    std::string major;
+#include <Windows.h> 
 
-public:
-    Student(const std::string& n, const std::string& i, const std::string& m)
-        : name(n), id(i), major(m) {
-    }
+#include <regex> 
 
-    bool isIDValid() const {
-        return id.size() == 9 && isdigit(id[0]) && isdigit(id[1]) && isdigit(id[2]) && isdigit(id[3]) &&
-            id[4] == '-' && isdigit(id[5]) && isdigit(id[6]) && isdigit(id[7]) && isdigit(id[8]);
-    }
+#include <string> 
 
-    int getYear() const {
-        if (isIDValid()) {
-            return std::stoi(id.substr(0, 4));
-        }
-        else {
-            throw std::invalid_argument("Invalid ID format");
-        }
-    }
+  
 
-    std::string getName() const { return name; }
-    std::string getID() const { return id; }
-    std::string getMajor() const { return major; }
-};
+class Student { 
 
-int main() {
-    Student s("Ivan", "2024-7745", "CS");
+private: 
 
-    std::cout << "Name: " << s.getName() << std::endl;
-    std::cout << "ID: " << s.getID() << std::endl;
-    std::cout << "Major: " << s.getMajor() << std::endl;
+    std::string name; 
 
-    if (s.isIDValid()) {
-        std::cout << "ID is valid." << std::endl;
-        std::cout << "Year: " << s.getYear() << std::endl;
-    }
-    else {
-        std::cout << "ID is invalid." << std::endl;
-    }
+    std::string studentID; 
 
-    return 0;
-}
+    std::string major; 
+
+  
+
+public: 
+
+    Student(const std::string& n, const std::string& id, const std::string& m) 
+
+        : name(n), studentID(id), major(m) { 
+
+    } 
+
+  
+
+    bool isIDValid(int& year) const { 
+
+        std::regex idPattern(R"(^\d{4}-\d{4}$)"); 
+
+        if (std::regex_match(studentID, idPattern)) { 
+
+            year = std::stoi(studentID.substr(0, 4)); 
+
+            return true; 
+
+        } 
+
+        return false; 
+
+    } 
+
+  
+
+    std::string getName() const { return name; } 
+
+    std::string getStudentID() const { return studentID; } 
+
+    std::string getMajor() const { return major; } 
+
+}; 
+
+  
+
+int main() { 
+
+    SetConsoleCP(1251); 
+
+    SetConsoleOutputCP(1251); 
+
+    Student student("Biden", "2024-6251", "Технології Цифрового Розвитку"); 
+
+  
+
+    int year = 0; 
+
+    if (student.isIDValid(year)) { 
+
+        std::cout << "Студентський ID є дійсним." << std::endl; 
+
+        std::cout << "Рік вступу: " << year << std::endl; 
+
+    } 
+
+    else { 
+
+        std::cout << "Студентський ID є недійсним." << std::endl; 
+
+    } 
+
+  
+
+    return 0; 
+
+} 
